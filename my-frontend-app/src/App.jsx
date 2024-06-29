@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MyForm from './Form';
@@ -9,9 +9,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/login' element={<MyForm />} />
-        <Route path='/' element={<Greeting />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path="/login" element={<MyForm />} />
+        <Route path="/" element={<Greeting />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
