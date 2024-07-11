@@ -5,12 +5,13 @@ import Button from 'react-bootstrap/Button';
 import { Navigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import { useSelector } from 'react-redux';
-import { useLoginMutation } from '../api';
+import { useLoginMutation } from '../services/authApi';
 
 function MyForm() {
   // eslint-disable-next-line no-unused-vars
   const [singIn, { error: errorMessage, isLoading: isSingingIn }] = useLoginMutation();
   const userData = useSelector((state) => state.user);
+  localStorage.setItem('token', userData.token);
 
   const submitHandler = async (e) => {
     e.preventDefault();

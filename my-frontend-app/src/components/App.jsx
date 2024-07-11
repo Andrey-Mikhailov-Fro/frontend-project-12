@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MyForm from './Form';
+import MyForm from './SingInForm';
 import Home from './Home';
 import NotFound from './NotFound';
 
