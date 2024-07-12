@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useEditChannelMutation } from '../services/channelsApi';
-import validate from '../services/validation';
+import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
 
 function EditChannelModal(props) {

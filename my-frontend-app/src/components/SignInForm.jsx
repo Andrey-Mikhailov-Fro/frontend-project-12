@@ -6,6 +6,7 @@ import { Navigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import { useSelector } from 'react-redux';
 import { useLoginMutation } from '../services/authApi';
+import CommonHeader from './CommonHeader';
 
 function MyForm() {
   // eslint-disable-next-line no-unused-vars
@@ -26,30 +27,37 @@ function MyForm() {
   if (userData.token !== '') return <Navigate to="/" />;
 
   return (
-    <Formik
-      initialValues={initialValues}
-    >
-      <Form onSubmit={submitHandler}>
-        <Field
-          type="name"
-          name="nickname"
-          className="form-control"
-        />
-        <Field
-          type="password"
-          name="password"
-          className="form-control"
-        />
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={isSingingIn}
-        >
-          Войти
-        </Button>
-        <div className="invalid">{errorMessage?.data.message || ''}</div>
-      </Form>
-    </Formik>
+    <>
+      <CommonHeader />
+      <Formik
+        initialValues={initialValues}
+      >
+        <Form onSubmit={submitHandler}>
+          <Field
+            type="name"
+            name="nickname"
+            className="form-control"
+          />
+          <Field
+            type="password"
+            name="password"
+            className="form-control"
+          />
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={isSingingIn}
+          >
+            Войти
+          </Button>
+          <div className="invalid">{errorMessage?.data.message || ''}</div>
+        </Form>
+      </Formik>
+      <div className="text-center">
+        <span>Нет аккаунта?</span>
+        <a href="/signup">Регистрация</a>
+      </div>
+    </>
   );
 }
 

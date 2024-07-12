@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useAddChannelMutation } from '../services/channelsApi';
-import validate from '../services/validation';
+import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
 
 function CreateChannelModal(props) {

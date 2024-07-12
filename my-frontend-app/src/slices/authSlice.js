@@ -7,10 +7,22 @@ const initialState = { user: '', token: '' };
 const slice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    quit: (state) => {
+      state.token = '';
+      state.user = '';
+    },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       authApi.endpoints.login.matchFulfilled,
+      (state, { payload }) => {
+        const { username, token } = payload;
+        state.token = token;
+        state.user = username;
+      },
+    ).addMatcher(
+      authApi.endpoints.singup.matchFulfilled,
       (state, { payload }) => {
         const { username, token } = payload;
         state.token = token;
@@ -20,4 +32,5 @@ const slice = createSlice({
   },
 });
 
+export const { quit } = slice.actions;
 export default slice.reducer;

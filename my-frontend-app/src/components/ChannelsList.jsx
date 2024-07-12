@@ -5,8 +5,11 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/esm/Container';
+import CreateChannelModal from './CreateChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import { useGetChannelsQuery } from '../services/channelsApi';
 import {
@@ -17,6 +20,7 @@ import EditChannelModal from './EditChannelModal';
 function ChannelsList(props) {
   const { isLoading } = useGetChannelsQuery();
   const [channelToEdit, setChannelToEdit] = useState(0);
+  const [showCreateChannel, setShowCreateChannel] = useState(false);
   const [showDeleteModal, setShowDelete] = useState(false);
   const [showEditModal, setShowEdit] = useState(false);
   const dispatch = useDispatch();
@@ -32,6 +36,7 @@ function ChannelsList(props) {
     dispatch(updateChannel({ id: channel.id, changes }));
   });
 
+  const openModalHandler = (shownFunc) => () => shownFunc(true);
   const closeModalHandler = (shownFunc) => () => shownFunc(false);
 
   const deleteHandler = (id) => () => {
@@ -88,6 +93,10 @@ function ChannelsList(props) {
 
   return (
     <>
+      <CreateChannelModal
+        show={showCreateChannel}
+        handleClose={closeModalHandler(setShowCreateChannel)}
+      />
       <DeleteChannelModal
         show={showDeleteModal}
         handleClose={closeModalHandler(setShowDelete)}
@@ -100,6 +109,10 @@ function ChannelsList(props) {
         handleClose={closeModalHandler(setShowEdit)}
         toEdit={channelToEdit}
       />
+      <Card className="d-flex mt-1 justify-content-between flex-row mb-2 ps-4 pe-2 p-4">
+        <Card.Body>Каналы</Card.Body>
+        <Button className="text-primary btn btn-group-vertical" onClick={openModalHandler(setShowCreateChannel)} />
+      </Card>
       <ListGroup>
         {isLoading ? 'Loading' : channels.map(renderListItem)}
       </ListGroup>
