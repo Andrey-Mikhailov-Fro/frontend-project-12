@@ -2,9 +2,10 @@ import { string } from 'yup';
 
 const validate = (channelName, existingNames) => {
   const schema = string()
-    .min(3)
-    .max(20)
-    .notOneOf(existingNames);
+    .required('signUpForm.errors.required')
+    .min(3, 'modals.errors.rules')
+    .max(20, 'modals.errors.rules')
+    .notOneOf(existingNames, 'modals.errors.exist');
 
   return schema.validate(channelName);
 };

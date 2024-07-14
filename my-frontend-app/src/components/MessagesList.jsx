@@ -43,7 +43,7 @@ function MessagesList(props) {
   const renderListItem = (item) => (
     <Container key={item.id} fluid="true" className="d-flex flex-row justify-content-between">
       <ListGroup.Item
-        className="w-100"
+        className="w-100 text-break mb-2"
         id={item.id}
       >
         {`${item.username}: ${item.body}`}
@@ -53,22 +53,24 @@ function MessagesList(props) {
   );
 
   return (
-    <>
-      <ListGroup>
+    <Container className="d-flex h-100 flex-column justify-content-end">
+      <ListGroup className="chat-messages overflow-auto px-5">
         {isLoading ? 'Loading...' : messages.filter((item) => item.channelId === active).map(renderListItem)}
       </ListGroup>
-      <Formik initialValues={{ message: '' }}>
-        <Form noValidate className="py-1 border rounded-2" onSubmit={messageSubmitHandler}>
-          <div className="input-group has-validation">
-            <Form.Control
-              type="name"
-              name="message"
-            />
-            <Button type="submit" className="btn btn-group-vertical" disabled={isSendingMessage} />
-          </div>
-        </Form>
-      </Formik>
-    </>
+      <div className="mt-auto px-5 py-3">
+        <Formik initialValues={{ message: '' }}>
+          <Form noValidate className="py-1 border rounded-2" onSubmit={messageSubmitHandler}>
+            <div className="input-group has-validation">
+              <Form.Control
+                type="name"
+                name="message"
+              />
+              <Button type="submit" className="btn btn-group-vertical" disabled={isSendingMessage} />
+            </div>
+          </Form>
+        </Formik>
+      </div>
+    </Container>
 
   );
 }

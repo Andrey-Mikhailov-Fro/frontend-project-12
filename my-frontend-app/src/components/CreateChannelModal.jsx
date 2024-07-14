@@ -5,15 +5,19 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useAddChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
 
 function CreateChannelModal(props) {
-  const [createChannel, { isLoading: isCreatingChannel }] = useAddChannelMutation();
+  const [createChannel,
+    { isLoading: isCreatingChannel }] = useAddChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
   const { show, handleClose } = props;
+
+  const { t } = useTranslation();
 
   const haveError = error !== '';
 
@@ -25,11 +29,13 @@ function CreateChannelModal(props) {
       const { newChannel } = value;
       try {
         await validate(newChannel, channelsNames);
-        createChannel({ name: newChannel });
+        await createChannel({ name: newChannel });
         formik.values.newChannel = '';
         handleClose();
       } catch (validationError) {
-        setError(...validationError.errors);
+        if (validationError.errors === undefined) return;
+        const [errorText] = validationError.errors;
+        setError(t(errorText));
       }
     },
   });
@@ -37,7 +43,7 @@ function CreateChannelModal(props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.createHeader')}</Modal.Title>
       </Modal.Header>
       <Form onSubmit={formik.handleSubmit}>
         <Modal.Body>
@@ -46,10 +52,10 @@ function CreateChannelModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Отменить
+            {t('modals.cancel')}
           </Button>
           <Button type="submit" variant="primary" disabled={isCreatingChannel}>
-            Создать
+            {t('modals.confirmCreate')}
           </Button>
         </Modal.Footer>
       </Form>

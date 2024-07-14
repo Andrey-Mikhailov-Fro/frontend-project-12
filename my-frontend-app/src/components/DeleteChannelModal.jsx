@@ -3,6 +3,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useRemoveChannelMutation } from '../services/channelsApi';
 import { selectors } from '../slices/messagesSlice';
 import { useRemoveMessageMutation } from '../services/messagesApi';
@@ -16,6 +17,8 @@ function DeleteChannelModal(props) {
   const messagesToDelete = useSelector(selectors.selectAll)
     .filter((message) => message.channelId === toDelete);
 
+  const { t } = useTranslation();
+
   const hanleRemove = (id) => () => {
     if (activeChnl === id) changeChnl('1');
     removeChannel(id);
@@ -26,15 +29,15 @@ function DeleteChannelModal(props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t('modals.deleteHeader')}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Уверены?</Modal.Body>
+      <Modal.Body>{t('modals.deleteBody')}</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Отменить
+          {t('modals.cancel')}
         </Button>
         <Button variant="danger" disabled={isRemovingChannel} onClick={hanleRemove(toDelete)}>
-          Удалить
+          {t('modals.confirmDelete')}
         </Button>
       </Modal.Footer>
     </Modal>

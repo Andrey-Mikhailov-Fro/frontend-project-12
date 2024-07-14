@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Navigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useLoginMutation } from '../services/authApi';
 import CommonHeader from './CommonHeader';
 
@@ -13,6 +14,8 @@ function MyForm() {
   const [singIn, { error: errorMessage, isLoading: isSingingIn }] = useLoginMutation();
   const userData = useSelector((state) => state.user);
   localStorage.setItem('token', userData.token);
+
+  const { t } = useTranslation();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -48,14 +51,14 @@ function MyForm() {
             type="submit"
             disabled={isSingingIn}
           >
-            Войти
+            {t('signInForm.button')}
           </Button>
           <div className="invalid">{errorMessage?.data.message || ''}</div>
         </Form>
       </Formik>
       <div className="text-center">
-        <span>Нет аккаунта?</span>
-        <a href="/signup">Регистрация</a>
+        <span>{t('signInForm.haveAccount')}</span>
+        <a href="/signup">{t('signInForm.registration')}</a>
       </div>
     </>
   );

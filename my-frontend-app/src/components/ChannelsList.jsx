@@ -8,7 +8,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/esm/Container';
+import { toast } from 'react-toastify';
 import CreateChannelModal from './CreateChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import { useGetChannelsQuery } from '../services/channelsApi';
@@ -25,15 +27,24 @@ function ChannelsList(props) {
   const [showEditModal, setShowEdit] = useState(false);
   const dispatch = useDispatch();
 
+  const { t } = useTranslation();
+
   const channels = useSelector(selectors.selectAll);
 
   const { active, onChangeChannel, socket } = props;
 
-  socket.on('newChannel', (channel) => dispatch(newChannel(channel)));
-  socket.on('removeChannel', ({ id }) => dispatch(removeChannel(id)));
+  socket.on('newChannel', (channel) => {
+    dispatch(newChannel(channel));
+    toast.success(t('toasts.create'), { closeOnClick: true, toastId: '1' });
+  });
+  socket.on('removeChannel', ({ id }) => {
+    dispatch(removeChannel(id));
+    toast.success(t('toasts.delete'), { toastId: '2' });
+  });
   socket.on('renameChannel', (channel) => {
     const changes = { name: channel.name };
     dispatch(updateChannel({ id: channel.id, changes }));
+    toast.success(t('toasts.edit'), { toastId: '3' });
   });
 
   const openModalHandler = (shownFunc) => () => shownFunc(true);
@@ -54,8 +65,8 @@ function ChannelsList(props) {
   const renderListItem = (item) => {
     const dropdownBtn = (
       <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown" className="btn btn-group-vertical p-0">
-        <Dropdown.Item eventKey="1" onClick={deleteHandler(item.id)}>Удалить</Dropdown.Item>
-        <Dropdown.Item eventKey="2" onClick={updateHandler(item.id)}>Переименовать</Dropdown.Item>
+        <Dropdown.Item eventKey="1" onClick={deleteHandler(item.id)}>{t('chat.dropdownButton.delete')}</Dropdown.Item>
+        <Dropdown.Item eventKey="2" onClick={updateHandler(item.id)}>{t('chat.dropdownButton.edit')}</Dropdown.Item>
       </DropdownButton>
     );
 
@@ -71,15 +82,13 @@ function ChannelsList(props) {
           </ListGroup.Item>
           {item.removable ? dropdownBtn : null}
         </Container>
-
       );
     }
 
     return (
-      <Container className="d-flex flex-row justify-content-between">
+      <Container key={item.id} className="d-flex flex-row justify-content-between">
         <ListGroup.Item
           id={item.id}
-          key={item.id}
           action
           onClick={clickHandler(item.id)}
           className="w-100"
@@ -109,8 +118,8 @@ function ChannelsList(props) {
         handleClose={closeModalHandler(setShowEdit)}
         toEdit={channelToEdit}
       />
-      <Card className="d-flex mt-1 justify-content-between flex-row mb-2 ps-4 pe-2 p-4">
-        <Card.Body>Каналы</Card.Body>
+      <Card className="d-flex mt-1 flex-row justify-content-between mb-2 ps-4 pe-2 p-4">
+        <Card.Body>{t('chat.channels')}</Card.Body>
         <Button className="text-primary btn btn-group-vertical" onClick={openModalHandler(setShowCreateChannel)} />
       </Card>
       <ListGroup>

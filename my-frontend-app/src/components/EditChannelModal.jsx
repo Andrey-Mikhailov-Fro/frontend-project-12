@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { useEditChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
@@ -14,6 +15,8 @@ function EditChannelModal(props) {
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
   const { show, handleClose, toEdit } = props;
+
+  const { t } = useTranslation();
 
   const haveError = error !== '';
 
@@ -30,7 +33,7 @@ function EditChannelModal(props) {
         formik.values.renamedChannel = '';
         handleClose();
       } catch (validationError) {
-        setError(...validationError.errors);
+        setError(t(...validationError.errors));
       }
     },
   });
@@ -38,7 +41,7 @@ function EditChannelModal(props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.editHeader')}</Modal.Title>
       </Modal.Header>
       <Form onSubmit={formik.handleSubmit}>
         <Modal.Body>
@@ -47,10 +50,10 @@ function EditChannelModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Отменить
+            {t('modals.cancel')}
           </Button>
           <Button type="submit" variant="primary" disabled={isEditingChannel}>
-            Переименовать
+            {t('modals.confirmEdit')}
           </Button>
         </Modal.Footer>
       </Form>

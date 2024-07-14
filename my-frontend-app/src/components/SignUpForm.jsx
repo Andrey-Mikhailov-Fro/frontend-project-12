@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { useSingupMutation } from '../services/authApi';
-import validate from '../services/validationSingUp';
+import validationSchema from '../services/validationSingUp';
 import CommonHeader from './CommonHeader';
 
 function SingUpForm() {
   const [singUp, { isLoading: isSingingUp }] = useSingupMutation();
-  const [error, setError] = useState('');
+  const [errorUsername, setErrorUsername] = useState('');
   const userData = useSelector((state) => state.user);
   localStorage.setItem('token', userData.token);
-
-  const haveError = error !== '';
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -22,16 +23,13 @@ function SingUpForm() {
       password: '',
       confirmPassword: '',
     },
+    validationSchema,
     onSubmit: async (values) => {
       const { username, password } = values;
 
-      try {
-        await validate(values);
-        const response = await singUp({ username, password });
-        console.log(response);
-        if (Object.hasOwn(response, 'error')) setError('Уже существует');
-      } catch (validationError) {
-        setError(validationError.errors);
+      const response = await singUp({ username, password });
+      if (Object.hasOwn(response, 'error')) {
+        if (response.error.status === 409) setErrorUsername(t('signUpForm.errors.alreadyExist'));
       }
     },
   });
@@ -42,11 +40,43 @@ function SingUpForm() {
     <>
       <CommonHeader />
       <Form onSubmit={formik.handleSubmit}>
-        <Form.Control type="name" name="username" isInvalid={haveError} value={formik.values.username} onChange={formik.handleChange} />
-        <Form.Control type="password" name="password" isInvalid={haveError} value={formik.values.password} onChange={formik.handleChange} />
-        <Form.Control type="password" name="confirmPassword" isInvalid={haveError} value={formik.values.confirmPassword} onChange={formik.handleChange} />
-        {haveError ? <div className="invalid-feedback">{error}</div> : null}
-        <Button type="submit" disabled={isSingingUp}>Зарегистрировать</Button>
+        <FloatingLabel label={t('signUpForm.username')}>
+          <Form.Control
+            type="name"
+            name="username"
+            isInvalid={(errorUsername !== '') || formik.errors.username}
+            value={formik.values.username}
+            onChange={formik.handleChange}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errorUsername !== '' ? errorUsername : t(formik.errors.username)}
+          </Form.Control.Feedback>
+        </FloatingLabel>
+        <FloatingLabel label={t('signUpForm.password')}>
+          <Form.Control
+            type="password"
+            name="password"
+            isInvalid={formik.errors.password}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+          />
+          <Form.Control.Feedback type="invalid">
+            {t(formik.errors.password)}
+          </Form.Control.Feedback>
+        </FloatingLabel>
+        <FloatingLabel label={t('signUpForm.confirmPassword')}>
+          <Form.Control
+            type="password"
+            name="confirmPassword"
+            isInvalid={formik.errors.confirmPassword}
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+          />
+          <Form.Control.Feedback type="invalid">
+            {t(formik.errors.confirmPassword)}
+          </Form.Control.Feedback>
+        </FloatingLabel>
+        <Button type="submit" disabled={isSingingUp}>{t('signUpForm.button')}</Button>
       </Form>
     </>
 

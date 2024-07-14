@@ -1,15 +1,9 @@
-import { string, object } from 'yup';
+import { string, object, ref } from 'yup';
 
-const validate = (values) => {
-  const { password } = values;
+const schema = object().shape({
+  username: string().required('signUpForm.errors.required').min(3, 'signUpForm.errors.usernameRules').max(20, 'signUpForm.errors.usernameRules'),
+  password: string().required('signUpForm.errors.required').min(6, 'signUpForm.errors.minPassword'),
+  confirmPassword: string().required('signUpForm.errors.required').oneOf([ref('password'), null], 'signUpForm.errors.passwordMatch'),
+});
 
-  const schema = object({
-    username: string().required().min(3).max(20),
-    password: string().required().min(6),
-    confirmPassword: string().required().min(6).oneOf([password]),
-  });
-
-  return schema.validate(values);
-};
-
-export default validate;
+export default schema;
