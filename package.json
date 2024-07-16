@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Fully working chat made on React/Redux",
   "main": "index.js",
+  "workspaces": ["my-frontend-app"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build --prefix my-frontend-app",
