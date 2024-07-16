@@ -6,9 +6,12 @@ import Form from 'react-bootstrap/Form';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
 import { useAddChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
+
+filter.loadDictionary(navigator.language);
 
 function CreateChannelModal(props) {
   const [createChannel,
@@ -27,9 +30,10 @@ function CreateChannelModal(props) {
     },
     onSubmit: async (value) => {
       const { newChannel } = value;
+      const checkedChannel = filter.clean(newChannel);
       try {
         await validate(newChannel, channelsNames);
-        await createChannel({ name: newChannel });
+        await createChannel({ name: checkedChannel });
         formik.values.newChannel = '';
         handleClose();
       } catch (validationError) {

@@ -6,9 +6,12 @@ import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
 import { useEditChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
+
+filter.loadDictionary(navigator.language);
 
 function EditChannelModal(props) {
   const [editChannel, { isLoading: isEditingChannel }] = useEditChannelMutation();
@@ -26,9 +29,10 @@ function EditChannelModal(props) {
     },
     onSubmit: async (value) => {
       const { renamedChannel } = value;
+      const checkedRenamedChannel = filter.clean(renamedChannel);
       try {
         await validate(renamedChannel, channelsNames);
-        const request = { id: toEdit, name: renamedChannel };
+        const request = { id: toEdit, name: checkedRenamedChannel };
         editChannel(request);
         formik.values.renamedChannel = '';
         handleClose();
