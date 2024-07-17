@@ -6,7 +6,6 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/esm/Container';
@@ -63,20 +62,24 @@ function ChannelsList(props) {
   };
 
   const renderListItem = (item) => {
+    const isActive = active === item.id;
+
     const dropdownBtn = (
-      <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown" className="btn btn-group-vertical p-0">
+      <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown" className="btn w-25 btn-group-vertical p-0">
         <Dropdown.Item eventKey="1" onClick={deleteHandler(item.id)}>{t('chat.dropdownButton.delete')}</Dropdown.Item>
         <Dropdown.Item eventKey="2" onClick={updateHandler(item.id)}>{t('chat.dropdownButton.edit')}</Dropdown.Item>
       </DropdownButton>
     );
 
-    if (active === item.id) {
+    const classNameListItem = item.removable ? 'w-75 rounded-lg' : 'w-100';
+
+    if (isActive) {
       return (
-        <Container key={item.id} className="d-flex flex-row justify-content-between">
+        <Container key={item.id} className="m-1 p-0 w-auto row">
           <ListGroup.Item
             id={item.id}
             active
-            className="w-100"
+            className={classNameListItem}
           >
             {`# ${item.name}`}
           </ListGroup.Item>
@@ -86,12 +89,12 @@ function ChannelsList(props) {
     }
 
     return (
-      <Container key={item.id} className="d-flex flex-row justify-content-between">
+      <Container key={item.id} className="m-1 p-0 w-auto row">
         <ListGroup.Item
           id={item.id}
           action
           onClick={clickHandler(item.id)}
-          className="w-100"
+          className={classNameListItem}
         >
           {`# ${item.name}`}
         </ListGroup.Item>
@@ -105,6 +108,8 @@ function ChannelsList(props) {
       <CreateChannelModal
         show={showCreateChannel}
         handleClose={closeModalHandler(setShowCreateChannel)}
+        activeChnl={active}
+        changeChnl={onChangeChannel}
       />
       <DeleteChannelModal
         show={showDeleteModal}
@@ -118,11 +123,16 @@ function ChannelsList(props) {
         handleClose={closeModalHandler(setShowEdit)}
         toEdit={channelToEdit}
       />
-      <Card className="d-flex mt-1 flex-row justify-content-between mb-2 ps-4 pe-2 p-4">
-        <Card.Body>{t('chat.channels')}</Card.Body>
-        <Button className="text-primary btn btn-group-vertical" onClick={openModalHandler(setShowCreateChannel)} />
-      </Card>
-      <ListGroup>
+      <div className="d-flex mt-1 flex-row justify-content-between p-4">
+        <b className="align-content-center col mx-3 w-auto">{t('chat.channels')}</b>
+        <Button
+          className="p-1 border-primary bg-white text-primary col m-0 pb-2"
+          onClick={openModalHandler(setShowCreateChannel)}
+        >
+          <b>+</b>
+        </Button>
+      </div>
+      <ListGroup className="nav flex-column nav-pills nav-fill px-2 mb-3 m-0 overflow-auto h-100 d-block">
         {isLoading ? 'Loading' : channels.map(renderListItem)}
       </ListGroup>
     </>

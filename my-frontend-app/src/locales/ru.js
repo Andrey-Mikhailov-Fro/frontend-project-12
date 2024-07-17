@@ -28,6 +28,10 @@ export default {
     chat: {
       channels: 'Каналы',
       message: 'Введите сообщение...',
+      send: 'Отправить',
+      count_one: '{{count}} сообщение',
+      count_few: '{{count}} сообщения',
+      count_many: '{{count}} сообщений',
       dropdownButton: {
         delete: 'Удалить',
         edit: 'Переименовать',

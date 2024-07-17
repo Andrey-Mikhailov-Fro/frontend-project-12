@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/esm/Button';
@@ -7,22 +6,27 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import * as messagesApi from '../services/messagesApi';
-import { selectors, newMessage, removeMessage } from '../slices/messagesSlice';
+import { selectors as messagesSelectors, newMessage, removeMessage } from '../slices/messagesSlice';
+import { selectors as channelsSelectors } from '../slices/channelsSlice';
 
 filter.loadDictionary(navigator.language);
 
 function MessagesList(props) {
   const { isLoading } = messagesApi.useGetMessagesQuery();
-  const [deleteMessage, { isLoading: isRemovingMessage }] = messagesApi.useRemoveMessageMutation();
   const [sendMessage, { isLoading: isSendingMessage }] = messagesApi.useAddMessageMutation();
   const dispatch = useDispatch();
 
-  const userData = useSelector((state) => state.user);
-  const messages = useSelector(selectors.selectAll);
+  const { t } = useTranslation();
 
   const { active, socket } = props;
+
+  const userData = useSelector((state) => state.user);
+  const messages = useSelector(messagesSelectors.selectAll);
+  const channels = useSelector(channelsSelectors.selectAll);
+  const currentChannel = channels.find((chan) => chan.id === active);
 
   const messageSubmitHandler = (e) => {
     e.preventDefault();
@@ -39,39 +43,49 @@ function MessagesList(props) {
     dispatch(removeMessage(id));
   });
 
-  const handleDelete = (id) => () => {
-    deleteMessage(id);
-  };
-
   const renderListItem = (item) => {
     const checkedMessage = filter.clean(item.body);
     return (
-      <Container key={item.id} fluid="true" className="d-flex flex-row justify-content-between">
+      <Container key={item.id} fluid="true" className="d-flex flex-row">
         <ListGroup.Item
           className="w-100 text-break mb-2"
           id={item.id}
         >
           {`${item.username}: ${checkedMessage}`}
         </ListGroup.Item>
-        <Button className="btn-secondary" disabled={isRemovingMessage} onClick={handleDelete(item.id)} />
       </Container>
     );
   };
 
+  const currentChannelMessages = messages
+    .filter((item) => item.channelId === active)
+    .map(renderListItem);
+
   return (
-    <Container className="d-flex h-100 flex-column justify-content-end">
-      <ListGroup className="chat-messages overflow-auto px-5">
-        {isLoading ? 'Loading...' : messages.filter((item) => item.channelId === active).map(renderListItem)}
+    <Container className="d-flex h-100 w-100 p-0 flex-column justify-content-end">
+      <div className="bg-secondary text-white w-100 mb-4 p-3 shadow-sm small">
+        <p><b>{`# ${currentChannel?.name}` || 'Loading...'}</b></p>
+        <span>{t('chat.count', { count: currentChannelMessages.length })}</span>
+      </div>
+      <ListGroup data-spy="scroll" className="chat-messages w-100 align-content-bottom overflow-auto m-0 px-5">
+        {isLoading ? 'Loading...' : currentChannelMessages}
       </ListGroup>
-      <div className="mt-auto px-5 py-3">
+      <div className="mt-auto m-0 p-3 w-100">
         <Formik initialValues={{ message: '' }}>
-          <Form noValidate className="py-1 border rounded-2" onSubmit={messageSubmitHandler}>
+          <Form noValidate className="border rounded-2" onSubmit={messageSubmitHandler}>
             <div className="input-group has-validation">
               <Form.Control
                 type="name"
                 name="message"
+                placeholder={t('chat.message')}
               />
-              <Button type="submit" className="btn btn-group-vertical" disabled={isSendingMessage} />
+              <Button
+                type="submit"
+                className="btn btn-group-vertical border-primary bg-white text-primary"
+                disabled={isSendingMessage}
+              >
+                {t('chat.send')}
+              </Button>
             </div>
           </Form>
         </Formik>

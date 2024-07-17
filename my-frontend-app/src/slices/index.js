@@ -11,7 +11,7 @@ import i18nextInstance from '../services/i18nextInstance';
 const errorHandlerMiddleware = () => (next) => (action) => {
   if (isRejectedWithValue(action)) {
     const customError = action.payload;
-    if (customError.status !== 409) {
+    if (![409, 401].includes(customError.status)) {
       return toast.error(i18nextInstance.t('toasts.connectionError'));
     }
   }

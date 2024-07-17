@@ -18,7 +18,8 @@ function CreateChannelModal(props) {
     { isLoading: isCreatingChannel }] = useAddChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
-  const { show, handleClose } = props;
+  // eslint-disable-next-line no-unused-vars
+  const { show, handleClose, changeChnl } = props;
 
   const { t } = useTranslation();
 
@@ -33,7 +34,8 @@ function CreateChannelModal(props) {
       const checkedChannel = filter.clean(newChannel);
       try {
         await validate(newChannel, channelsNames);
-        await createChannel({ name: checkedChannel });
+        const newActive = await createChannel({ name: checkedChannel });
+        changeChnl(newActive.data.id);
         formik.values.newChannel = '';
         handleClose();
       } catch (validationError) {
