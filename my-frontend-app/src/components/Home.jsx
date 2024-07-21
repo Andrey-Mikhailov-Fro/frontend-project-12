@@ -9,7 +9,7 @@ import ChannelsBlock from './ChannelsBlock';
 import MessagesBlock from './MessagesBlock';
 import CommonHeader from './CommonHeader';
 
-const socket = io('https://localhost:5001', {
+const socket = io('http://localhost:5001', {
   transports: ['websocket'],
   rejectUnauthorized: false,
 });
