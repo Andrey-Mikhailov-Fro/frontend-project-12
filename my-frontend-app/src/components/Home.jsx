@@ -9,10 +9,7 @@ import ChannelsBlock from './ChannelsBlock';
 import MessagesBlock from './MessagesBlock';
 import CommonHeader from './CommonHeader';
 
-const socket = io('http://localhost:5001', {
-  transports: ['websocket'],
-  rejectUnauthorized: false,
-});
+const socket = io('http://localhost:5001');
 
 function Home() {
   const [activeChannel, setActive] = useState('1');
