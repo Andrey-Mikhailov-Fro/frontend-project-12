@@ -1,6 +1,7 @@
 {
   "name": "my-frontend-app",
   "version": "0.1.0",
+  "main": "src/index.jsx",
   "private": true,
   "proxy": "http://localhost:5001",
   "dependencies": {
