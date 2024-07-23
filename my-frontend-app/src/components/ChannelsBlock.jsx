@@ -78,6 +78,7 @@ function ChannelsList(props) {
       return (
         <Container key={item.id} className="m-1 p-0 w-auto row">
           <ListGroup.Item
+            as="button"
             id={item.id}
             active
             className={classNameListItem}
@@ -92,6 +93,7 @@ function ChannelsList(props) {
     return (
       <Container key={item.id} className="m-1 p-0 w-auto row">
         <ListGroup.Item
+          as="button"
           id={item.id}
           action
           onClick={clickHandler(item.id)}
