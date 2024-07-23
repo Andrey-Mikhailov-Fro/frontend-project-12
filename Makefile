@@ -8,7 +8,7 @@ start-frontend:
 	make -C my-frontend-app start
 
 start-backend:
-	npx start-server
+	npm start
 
 start:
 	make start-backend

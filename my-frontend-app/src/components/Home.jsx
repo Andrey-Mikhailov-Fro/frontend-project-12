@@ -16,12 +16,6 @@ function Home() {
   const userData = useSelector((state) => state.user);
   const isLoggedIn = userData.token !== '';
 
-  socket.on('connect_error', (err) => {
-    console.log(err.message);
-    console.log(err.description);
-    console.log(err.context);
-  });
-
   if (!isLoggedIn) return <Navigate to="/login" />;
   return (
     <div style={{ height: '80vh' }}>

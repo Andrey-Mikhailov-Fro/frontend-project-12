@@ -33,6 +33,7 @@ export default {
       count_few: '{{count}} сообщения',
       count_many: '{{count}} сообщений',
       dropdownButton: {
+        hiddenLabel: 'Управление каналом',
         delete: 'Удалить',
         edit: 'Переименовать',
       },
