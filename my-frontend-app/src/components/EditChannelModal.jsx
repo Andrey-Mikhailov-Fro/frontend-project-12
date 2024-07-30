@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -31,8 +31,8 @@ function EditChannelModal(props) {
       const { renamedChannel } = value;
       const checkedRenamedChannel = filter.clean(renamedChannel);
       try {
-        await validate(renamedChannel, channelsNames);
-        const request = { id: toEdit, name: checkedRenamedChannel };
+        await validate(renamedChannel.trim(), channelsNames);
+        const request = { id: toEdit, name: checkedRenamedChannel.trim() };
         editChannel(request);
         formik.values.renamedChannel = '';
         handleClose();
@@ -42,6 +42,20 @@ function EditChannelModal(props) {
     },
   });
 
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const focus = () => {
+      if (inputRef.current === null) {
+        setTimeout(focus, 100);
+      } else {
+        inputRef.current.focus();
+      }
+    };
+
+    focus();
+  });
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -49,7 +63,14 @@ function EditChannelModal(props) {
       </Modal.Header>
       <Form onSubmit={formik.handleSubmit}>
         <Modal.Body>
-          <Form.Control type="name" name="renamedChannel" isInvalid={haveError} onChange={formik.handleChange} value={formik.values.renamedChannel} />
+          <Form.Control
+            type="name"
+            name="renamedChannel"
+            isInvalid={haveError}
+            onChange={formik.handleChange}
+            value={formik.values.renamedChannel}
+            ref={inputRef}
+          />
           {haveError ? <div className="invalid-feedback">{error}</div> : null}
         </Modal.Body>
         <Modal.Footer>

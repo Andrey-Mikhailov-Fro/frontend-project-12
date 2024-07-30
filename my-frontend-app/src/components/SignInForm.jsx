@@ -52,6 +52,7 @@ function MyForm() {
                   <Form.Control
                     type="name"
                     name="nickname"
+                    className="w-50"
                     isInvalid={possibleError}
                     value={formik.values.nickname}
                     onChange={formik.handleChange}
@@ -61,6 +62,7 @@ function MyForm() {
                   <Form.Control
                     type="password"
                     name="password"
+                    className="w-50"
                     isInvalid={possibleError}
                     value={formik.values.password}
                     onChange={formik.handleChange}

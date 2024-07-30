@@ -16,6 +16,9 @@ import CommonHeader from './CommonHeader';
 function SingUpForm() {
   const [singUp, { isLoading: isSingingUp }] = useSingupMutation();
   const [errorUsername, setErrorUsername] = useState('');
+  const [focusUsername, setFocusedUsername] = useState(false);
+  const [focusPassword, setFocusedPassword] = useState(false);
+  const [focusConfirm, setFocusedConfirm] = useState(false);
   const userData = useSelector((state) => state.user);
   localStorage.setItem('token', userData.token);
   const { t } = useTranslation();
@@ -37,6 +40,21 @@ function SingUpForm() {
     },
   });
 
+  const focus = {
+    username: () => {
+      setFocusedUsername(true);
+      formik.validateForm();
+    },
+    password: () => {
+      setFocusedPassword(true);
+      formik.validateForm();
+    },
+    confirm: () => {
+      setFocusedConfirm(true);
+      formik.validateForm();
+    },
+  };
+
   if (userData.token !== '') return <Navigate to="/" />;
 
   return (
@@ -49,7 +67,9 @@ function SingUpForm() {
               <Form.Control
                 type="name"
                 name="username"
-                isInvalid={(errorUsername !== '') || formik.errors.username}
+                className="w-50"
+                onBlur={focus.username}
+                isInvalid={focusUsername && formik.errors.username}
                 value={formik.values.username}
                 onChange={formik.handleChange}
               />
@@ -61,7 +81,9 @@ function SingUpForm() {
               <Form.Control
                 type="password"
                 name="password"
-                isInvalid={formik.errors.password}
+                className="w-50"
+                onBlur={focus.password}
+                isInvalid={focusPassword && formik.errors.password}
                 value={formik.values.password}
                 onChange={formik.handleChange}
               />
@@ -73,7 +95,9 @@ function SingUpForm() {
               <Form.Control
                 type="password"
                 name="confirmPassword"
-                isInvalid={formik.errors.confirmPassword}
+                className="w-50"
+                onBlur={focus.confirm}
+                isInvalid={focusConfirm && formik.errors.confirmPassword}
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
               />
@@ -84,7 +108,7 @@ function SingUpForm() {
             <Button
               className="w-100 border-primary bg-white text-primary"
               type="submit"
-              disabled={isSingingUp}
+              disabled={isSingingUp || !formik.isValid}
             >
               {t('signUpForm.button')}
             </Button>

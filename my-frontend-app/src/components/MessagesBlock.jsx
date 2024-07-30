@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/esm/Button';
 import Container from 'react-bootstrap/Container';
@@ -28,6 +29,20 @@ function MessagesList(props) {
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannel = channels.find((chan) => chan.id === active);
 
+  useEffect(() => {
+    const scroll = () => {
+      if (isLoading) {
+        setTimeout(scroll, 100);
+      } else {
+        const lastNumber = Math.max(...messages.map((message) => message.id));
+        const lastMessage = document.querySelector(`#message-${lastNumber}`);
+        lastMessage.scrollIntoView();
+      }
+    };
+
+    scroll();
+  }, [messages]);
+
   const messageSubmitHandler = (e) => {
     e.preventDefault();
     const messageBody = e.target.message.value;
@@ -49,7 +64,7 @@ function MessagesList(props) {
       <Container key={item.id} fluid="true" className="d-flex flex-row">
         <ListGroup.Item
           className="w-100 text-break mb-2"
-          id={item.id}
+          id={`message-${item.id}`}
         >
           {`${item.username}: ${checkedMessage}`}
         </ListGroup.Item>

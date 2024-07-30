@@ -72,7 +72,7 @@ function ChannelsList(props) {
       </DropdownButton>
     );
 
-    const classNameListItem = item.removable ? 'w-75 rounded-lg' : 'w-100';
+    const classNameListItem = item.removable ? 'w-75 rounded-lg text-start' : 'w-100 text-start';
 
     if (isActive) {
       return (

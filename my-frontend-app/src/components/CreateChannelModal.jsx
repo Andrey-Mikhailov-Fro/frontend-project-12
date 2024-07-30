@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -33,10 +33,11 @@ function CreateChannelModal(props) {
       const { newChannel } = value;
       const checkedChannel = filter.clean(newChannel);
       try {
-        await validate(newChannel, channelsNames);
-        const newActive = await createChannel({ name: checkedChannel });
+        await validate(newChannel.trim(), channelsNames);
+        const newActive = await createChannel({ name: checkedChannel.trim() });
         changeChnl(newActive.data.id);
         formik.values.newChannel = '';
+        setError('');
         handleClose();
       } catch (validationError) {
         if (validationError.errors === undefined) return;
@@ -46,6 +47,20 @@ function CreateChannelModal(props) {
     },
   });
 
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const focus = () => {
+      if (inputRef.current === null) {
+        setTimeout(focus, 100);
+      } else {
+        inputRef.current.focus();
+      }
+    };
+
+    focus();
+  });
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -53,7 +68,7 @@ function CreateChannelModal(props) {
       </Modal.Header>
       <Form onSubmit={formik.handleSubmit}>
         <Modal.Body>
-          <Form.Control type="name" name="newChannel" isInvalid={haveError} onChange={formik.handleChange} value={formik.values.newChannel} />
+          <Form.Control ref={inputRef} type="name" name="newChannel" isInvalid={haveError} onChange={formik.handleChange} value={formik.values.newChannel} />
           {haveError ? <div className="invalid-feedback">{error}</div> : null}
         </Modal.Body>
         <Modal.Footer>

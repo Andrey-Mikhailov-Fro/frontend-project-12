@@ -1,5 +1,7 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Andrey-Mikhailov-Fro/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Andrey-Mikhailov-Fro/frontend-project-12/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/086ffb36d4e835083307/maintainability)](https://codeclimate.com/github/Andrey-Mikhailov-Fro/frontend-project-12/maintainability)
+[![Actions Status](https://github.com/Andrey-Mikhailov-Fro/frontend-project-12/actions/workflows/my-check.yml/badge.svg)](https://github.com/Andrey-Mikhailov-Fro/frontend-project-12/actions)
 
 #Hexlet Chat
 
