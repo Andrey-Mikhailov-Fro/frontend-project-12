@@ -9,12 +9,12 @@ import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
-import { useSingupMutation } from '../services/authApi';
+import { useSignupMutation } from '../services/authApi';
 import validationSchema from '../services/validationSingUp';
 import CommonHeader from './CommonHeader';
 
 function SingUpForm() {
-  const [singUp, { isLoading: isSingingUp }] = useSingupMutation();
+  const [singUp, { isLoading: isSingingUp }] = useSignupMutation();
   const [errorUsername, setErrorUsername] = useState('');
   const [focusUsername, setFocusedUsername] = useState(false);
   const [focusPassword, setFocusedPassword] = useState(false);
@@ -108,7 +108,7 @@ function SingUpForm() {
             <Button
               className="w-100 border-primary bg-white text-primary"
               type="submit"
-              disabled={isSingingUp || !formik.isValid}
+              disabled={isSingingUp}
             >
               {t('signUpForm.button')}
             </Button>

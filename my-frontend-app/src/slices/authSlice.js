@@ -22,7 +22,7 @@ const slice = createSlice({
         state.user = username;
       },
     ).addMatcher(
-      authApi.endpoints.singup.matchFulfilled,
+      authApi.endpoints.signup.matchFulfilled,
       (state, { payload }) => {
         const { username, token } = payload;
         state.token = token;

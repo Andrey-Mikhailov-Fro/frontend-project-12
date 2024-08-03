@@ -44,7 +44,7 @@ function MyForm() {
       <CommonHeader />
       <Container fluid className="row justify-content-center align-content-center">
         <Card className="h-50 w-50 m-3 mb-1 p-5 shadow">
-          <Card.Header as="h1" className="text-center m-4 border-0 bg-white">{t('signInForm.button')}</Card.Header>
+          <Card.Header as="h1" className="text-center m-4 border-0 bg-white flex-nowrap">{t('signInForm.button')}</Card.Header>
           <Card.Body>
             <Formik>
               <Form onSubmit={formik.handleSubmit}>
