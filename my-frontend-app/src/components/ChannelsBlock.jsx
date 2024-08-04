@@ -127,8 +127,9 @@ function ChannelsList(props) {
         toEdit={channelToEdit}
       />
       <div className="d-flex mt-1 flex-row justify-content-between p-4">
-        <b className="align-content-center col mx-3 w-auto">{t('chat.channels')}</b>
+        <b className="align-content-center text-center col mx-3 w-auto">{t('chat.channels')}</b>
         <Button
+          style={{ maxWidth: '50px' }}
           className="p-1 border-primary bg-white text-primary col m-0 pb-2"
           onClick={openModalHandler(setShowCreateChannel)}
         >
