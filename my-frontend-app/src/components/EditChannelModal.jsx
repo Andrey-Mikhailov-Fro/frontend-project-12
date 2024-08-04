@@ -65,13 +65,14 @@ function EditChannelModal(props) {
         <Modal.Body>
           <Form.Control
             type="name"
-            name="name"
+            name="renamedChannel"
+            id="renamedChannel"
             isInvalid={haveError}
             onChange={formik.handleChange}
             value={formik.values.renamedChannel}
             ref={inputRef}
           />
-          <label htmlFor="name" className="visually-hidden">{t('labels.channelName')}</label>
+          <label htmlFor="renamedChannel" className="visually-hidden">{t('labels.channelName')}</label>
           {haveError ? <div className="invalid-feedback">{error}</div> : null}
         </Modal.Body>
         <Modal.Footer>

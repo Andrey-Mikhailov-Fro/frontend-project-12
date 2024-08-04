@@ -72,6 +72,7 @@ function CreateChannelModal(props) {
             ref={inputRef}
             type="name"
             name="newChannel"
+            id="newChannel"
             isInvalid={haveError}
             onChange={formik.handleChange}
             value={formik.values.newChannel}
