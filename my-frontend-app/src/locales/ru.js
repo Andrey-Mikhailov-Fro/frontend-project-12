@@ -40,7 +40,7 @@ export default {
     },
     modals: {
       createHeader: 'Добавить канал',
-      editHeader: 'Переименовать канал',
+      editHeader: 'Переименовать',
       deleteHeader: 'Удалить канал',
       deleteBody: 'Уверены?',
       cancel: 'Отменить',
