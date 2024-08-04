@@ -64,49 +64,62 @@ function ChannelsList(props) {
   const renderListItem = (item) => {
     const isActive = active === item.id;
 
+    const activeState = isActive ? 'active' : 'nonActive';
+
+    const itemsClassConfig = {
+      active: {
+        dropdown: 'flex-grow-0 dropdown-toggle-split btn btn-secondary',
+        dropdownVariant: 'secondary',
+        channelNameBtn: 'w-100 rounded-0 text-start text-truncate btn btn-secondary',
+      },
+      nonActive: {
+        dropdown: 'flex-grow-0 dropdown-toggle-split btn btn-light',
+        dropdownVariant: 'light',
+        channelNameBtn: 'w-100 rounded-0 text-start text-truncate btn',
+      },
+    };
+
     const dropdownBtn = (
       <DropdownButton
         as={ButtonGroup}
         title={<span className="visually-hidden p-0 m-0 align-self-start">{t('chat.dropdownButton.hiddenLabel')}</span>}
         id="bg-nested-dropdown"
-        className="btn w-25 btn-group-vertical p-0"
+        className={itemsClassConfig[activeState].dropdown}
+        variant={itemsClassConfig[activeState].dropdownVariant}
+        size="sm"
       >
         <Dropdown.Item eventKey="1" onClick={deleteHandler(item.id)}>{t('chat.dropdownButton.delete')}</Dropdown.Item>
         <Dropdown.Item eventKey="2" onClick={updateHandler(item.id)}>{t('chat.dropdownButton.edit')}</Dropdown.Item>
       </DropdownButton>
     );
 
-    const classNameListItem = item.removable ? 'w-75 rounded-lg text-start' : 'w-100 text-start';
-
     if (isActive) {
       return (
-        <Container key={item.id} className="m-1 p-0 w-auto row">
-          <ListGroup.Item
-            as="button"
+        <ListGroup.Item as="li" key={item.id} className="d-flex dropdown btn-group p-0 bg-secondary">
+          <button
+            type="button"
             id={item.id}
-            active
-            className={classNameListItem}
+            className={itemsClassConfig[activeState].channelNameBtn}
           >
             {`# ${item.name}`}
-          </ListGroup.Item>
+          </button>
           {item.removable ? dropdownBtn : null}
-        </Container>
+        </ListGroup.Item>
       );
     }
 
     return (
-      <Container key={item.id} className="m-1 p-0 w-auto row">
-        <ListGroup.Item
-          as="button"
+      <ListGroup.Item as="li" key={item.id} className="d-flex dropdown btn-group p-0">
+        <button
+          type="button"
           id={item.id}
-          action
           onClick={clickHandler(item.id)}
-          className={classNameListItem}
+          className={itemsClassConfig[activeState].channelNameBtn}
         >
           {`# ${item.name}`}
-        </ListGroup.Item>
+        </button>
         {item.removable ? dropdownBtn : null}
-      </Container>
+      </ListGroup.Item>
     );
   };
 
