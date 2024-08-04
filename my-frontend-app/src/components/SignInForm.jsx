@@ -48,7 +48,7 @@ function MyForm() {
           <Card.Body>
             <Formik>
               <Form onSubmit={formik.handleSubmit}>
-                <FloatingLabel className="mb-4" label={t('signInForm.username')}>
+                <FloatingLabel className="mb-4" controlId="nickname" label={t('signInForm.username')}>
                   <Form.Control
                     type="name"
                     name="nickname"
@@ -58,7 +58,7 @@ function MyForm() {
                     onChange={formik.handleChange}
                   />
                 </FloatingLabel>
-                <FloatingLabel className="mb-4" label={t('signInForm.password')}>
+                <FloatingLabel className="mb-4" controlId="password" label={t('signInForm.password')}>
                   <Form.Control
                     type="password"
                     name="password"
