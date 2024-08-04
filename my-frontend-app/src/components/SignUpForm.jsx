@@ -63,7 +63,7 @@ function SingUpForm() {
       <Container fluid className="row justify-content-center align-content-center">
         <Card className="h-50 w-50 m-3 mb-1 p-5 shadow">
           <Form onSubmit={formik.handleSubmit}>
-            <FloatingLabel className="mb-3" label={t('signUpForm.username')}>
+            <FloatingLabel className="mb-3" label={t('signUpForm.username')} controlId="username">
               <Form.Control
                 type="name"
                 name="username"
@@ -77,7 +77,7 @@ function SingUpForm() {
                 {errorUsername !== '' ? errorUsername : t(formik.errors.username)}
               </Form.Control.Feedback>
             </FloatingLabel>
-            <FloatingLabel className="mb-3" label={t('signUpForm.password')}>
+            <FloatingLabel className="mb-3" label={t('signUpForm.password')} controlId="password">
               <Form.Control
                 type="password"
                 name="password"
@@ -91,7 +91,7 @@ function SingUpForm() {
                 {t(formik.errors.password)}
               </Form.Control.Feedback>
             </FloatingLabel>
-            <FloatingLabel className="mb-4" label={t('signUpForm.confirmPassword')}>
+            <FloatingLabel className="mb-4" label={t('signUpForm.confirmPassword')} controlId="confirmPassword">
               <Form.Control
                 type="password"
                 name="confirmPassword"
