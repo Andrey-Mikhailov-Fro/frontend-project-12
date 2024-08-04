@@ -36,7 +36,7 @@ function MessagesList(props) {
       } else {
         const lastNumber = Math.max(...messages.map((message) => message.id));
         const lastMessage = document.querySelector(`#message-${lastNumber}`);
-        lastMessage.scrollIntoView();
+        if (lastMessage !== null) lastMessage.scrollIntoView();
       }
     };
 
