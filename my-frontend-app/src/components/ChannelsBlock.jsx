@@ -65,8 +65,12 @@ function ChannelsList(props) {
     const isActive = active === item.id;
 
     const dropdownBtn = (
-      <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown" className="btn w-25 btn-group-vertical p-0">
-        <span className="visually-hidden">{t('chat.dropdownButton.hiddenLabel')}</span>
+      <DropdownButton
+        as={ButtonGroup}
+        title={<span className="visually-hidden p-0 m-0 align-self-start">{t('chat.dropdownButton.hiddenLabel')}</span>}
+        id="bg-nested-dropdown"
+        className="btn w-25 btn-group-vertical p-0"
+      >
         <Dropdown.Item eventKey="1" onClick={deleteHandler(item.id)}>{t('chat.dropdownButton.delete')}</Dropdown.Item>
         <Dropdown.Item eventKey="2" onClick={updateHandler(item.id)}>{t('chat.dropdownButton.edit')}</Dropdown.Item>
       </DropdownButton>
