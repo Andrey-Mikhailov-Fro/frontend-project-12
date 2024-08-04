@@ -58,5 +58,9 @@ export default {
       delete: 'Канал удалён',
       connectionError: 'Ошибка соединения',
     },
+    labels: {
+      newMessage: 'Новое сообщение',
+      channelName: 'Имя канала',
+    },
   },
 };

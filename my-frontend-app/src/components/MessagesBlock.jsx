@@ -92,6 +92,7 @@ function MessagesList(props) {
               <Form.Control
                 type="name"
                 name="message"
+                aria-label={t('labels.newMessage')}
                 placeholder={t('chat.message')}
               />
               <Button

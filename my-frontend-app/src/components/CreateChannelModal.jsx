@@ -68,7 +68,15 @@ function CreateChannelModal(props) {
       </Modal.Header>
       <Form onSubmit={formik.handleSubmit}>
         <Modal.Body>
-          <Form.Control ref={inputRef} type="name" name="newChannel" isInvalid={haveError} onChange={formik.handleChange} value={formik.values.newChannel} />
+          <Form.Control
+            ref={inputRef}
+            type="name"
+            name="newChannel"
+            isInvalid={haveError}
+            onChange={formik.handleChange}
+            value={formik.values.newChannel}
+          />
+          <label htmlFor="newChannel" className="visually-hidden">{t('labels.channelName')}</label>
           {haveError ? <div className="invalid-feedback">{error}</div> : null}
         </Modal.Body>
         <Modal.Footer>
