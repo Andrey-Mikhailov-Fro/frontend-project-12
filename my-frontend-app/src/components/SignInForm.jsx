@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useLoginMutation } from '../services/authApi';
 import CommonHeader from './CommonHeader';
 
-function MyForm() {
+const MyForm = () => {
   const [singIn, { isLoading: isSingingIn }] = useLoginMutation();
   const [error, setError] = useState('');
   const userData = useSelector((state) => state.user);
@@ -90,6 +90,6 @@ function MyForm() {
       </Container>
     </>
   );
-}
+};
 
 export default MyForm;

@@ -15,7 +15,7 @@ import { selectors as channelsSelectors } from '../slices/channelsSlice';
 
 filter.loadDictionary(navigator.language);
 
-function MessagesList(props) {
+const MessagesList = (props) => {
   const { isLoading } = messagesApi.useGetMessagesQuery();
   const [sendMessage, { isLoading: isSendingMessage }] = messagesApi.useAddMessageMutation();
   const dispatch = useDispatch();
@@ -109,6 +109,6 @@ function MessagesList(props) {
     </Container>
 
   );
-}
+};
 
 export default MessagesList;

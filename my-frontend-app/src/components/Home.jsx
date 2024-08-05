@@ -11,7 +11,7 @@ import CommonHeader from './CommonHeader';
 
 const socket = io();
 
-function Home() {
+const Home = () => {
   const [activeChannel, setActive] = useState('1');
   const userData = useSelector((state) => state.user);
   const isLoggedIn = userData.token !== '';
@@ -33,6 +33,6 @@ function Home() {
     </div>
 
   );
-}
+};
 
 export default Home;

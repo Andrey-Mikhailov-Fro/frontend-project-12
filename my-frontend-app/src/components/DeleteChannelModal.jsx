@@ -8,7 +8,7 @@ import { useRemoveChannelMutation } from '../services/channelsApi';
 import { selectors } from '../slices/messagesSlice';
 import { useRemoveMessageMutation } from '../services/messagesApi';
 
-function DeleteChannelModal(props) {
+const DeleteChannelModal = (props) => {
   const [removeChannel, { isLoading: isRemovingChannel }] = useRemoveChannelMutation();
   const [removeMessage] = useRemoveMessageMutation();
   const {
@@ -42,6 +42,6 @@ function DeleteChannelModal(props) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default DeleteChannelModal;

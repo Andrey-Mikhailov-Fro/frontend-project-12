@@ -14,22 +14,20 @@ const rollbarConfig = {
   environment: process.env.NODE_ENV,
 };
 
-function App() {
-  return (
-    <Provider config={rollbarConfig}>
-      <ErrorBoundary>
-        <BrowserRouter>
-          <Routes>
-            <Route path={routes.signUp} element={<SingUpForm />} />
-            <Route path={routes.login} element={<SingInForm />} />
-            <Route path={routes.home} element={<Home />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </ErrorBoundary>
-      <ToastContainer />
-    </Provider>
-  );
-}
+const App = () => (
+  <Provider config={rollbarConfig}>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Routes>
+          <Route path={routes.signUp} element={<SingUpForm />} />
+          <Route path={routes.login} element={<SingInForm />} />
+          <Route path={routes.home} element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </ErrorBoundary>
+    <ToastContainer />
+  </Provider>
+);
 
 export default App;

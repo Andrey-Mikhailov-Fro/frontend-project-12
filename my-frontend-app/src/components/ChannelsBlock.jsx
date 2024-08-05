@@ -18,7 +18,7 @@ import {
 } from '../slices/channelsSlice';
 import EditChannelModal from './EditChannelModal';
 
-function ChannelsList(props) {
+const ChannelsList = (props) => {
   const { isLoading } = useGetChannelsQuery();
   const [channelToEdit, setChannelToEdit] = useState(0);
   const [showCreateChannel, setShowCreateChannel] = useState(false);
@@ -158,6 +158,6 @@ function ChannelsList(props) {
       </ListGroup>
     </>
   );
-}
+};
 
 export default ChannelsList;

@@ -13,7 +13,7 @@ import { useSignupMutation } from '../services/authApi';
 import validationSchema from '../services/validationSingUp';
 import CommonHeader from './CommonHeader';
 
-function SingUpForm() {
+const SingUpForm = () => {
   const [singUp, { isLoading: isSingingUp }] = useSignupMutation();
   const [errorUsername, setErrorUsername] = useState('');
   const [focusUsername, setFocusedUsername] = useState(false);
@@ -119,6 +119,6 @@ function SingUpForm() {
     </>
 
   );
-}
+};
 
 export default SingUpForm;

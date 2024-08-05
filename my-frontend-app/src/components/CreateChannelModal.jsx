@@ -13,7 +13,7 @@ import { selectors } from '../slices/channelsSlice';
 
 filter.loadDictionary(navigator.language);
 
-function CreateChannelModal(props) {
+const CreateChannelModal = (props) => {
   const [createChannel,
     { isLoading: isCreatingChannel }] = useAddChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
@@ -91,6 +91,6 @@ function CreateChannelModal(props) {
       </Form>
     </Modal>
   );
-}
+};
 
 export default CreateChannelModal;

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { quit } from '../slices/authSlice';
 
-function CommonHeader() {
+const CommonHeader = () => {
   const userData = useSelector((state) => state.user);
   const isLoggedIn = userData.token !== '';
   const dispatch = useDispatch();
@@ -24,6 +24,6 @@ function CommonHeader() {
       </Container>
     </Navbar>
   );
-}
+};
 
 export default CommonHeader;

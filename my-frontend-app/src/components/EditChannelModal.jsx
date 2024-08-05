@@ -13,7 +13,7 @@ import { selectors } from '../slices/channelsSlice';
 
 filter.loadDictionary(navigator.language);
 
-function EditChannelModal(props) {
+const EditChannelModal = (props) => {
   const [editChannel, { isLoading: isEditingChannel }] = useEditChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
@@ -86,6 +86,6 @@ function EditChannelModal(props) {
       </Form>
     </Modal>
   );
-}
+};
 
 export default EditChannelModal;
