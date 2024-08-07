@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useRef, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -17,7 +18,9 @@ const EditChannelModal = (props) => {
   const [editChannel, { isLoading: isEditingChannel }] = useEditChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
-  const { show, handleClose, toEdit } = props;
+  const {
+    show, handleClose, toEdit, nameToEdit,
+  } = props;
 
   const { t } = useTranslation();
 
@@ -25,8 +28,9 @@ const EditChannelModal = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      renamedChannel: '',
+      renamedChannel: nameToEdit,
     },
+    enableReinitialize: true,
     onSubmit: async (value) => {
       const { renamedChannel } = value;
       const checkedRenamedChannel = filter.clean(renamedChannel);

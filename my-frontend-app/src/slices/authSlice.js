@@ -8,6 +8,10 @@ const slice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    refresh: (state) => {
+      state.user = localStorage.getItem('user');
+      state.token = localStorage.getItem('token');
+    },
     quit: (state) => {
       state.token = '';
       state.user = '';
@@ -32,5 +36,5 @@ const slice = createSlice({
   },
 });
 
-export const { quit } = slice.actions;
+export const { refresh, quit } = slice.actions;
 export default slice.reducer;

@@ -14,6 +14,8 @@ const CommonHeader = () => {
 
   const clickhandler = () => {
     dispatch(quit());
+    localStorage.setItem('user', null);
+    localStorage.setItem('token', null);
   };
 
   return (

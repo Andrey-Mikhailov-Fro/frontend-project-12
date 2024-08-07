@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -8,7 +8,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import Container from 'react-bootstrap/esm/Container';
 import { toast } from 'react-toastify';
 import CreateChannelModal from './CreateChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
@@ -20,7 +19,7 @@ import EditChannelModal from './EditChannelModal';
 
 const ChannelsList = (props) => {
   const { isLoading } = useGetChannelsQuery();
-  const [channelToEdit, setChannelToEdit] = useState(0);
+  const [channelToEdit, setChannelToEdit] = useState(1);
   const [showCreateChannel, setShowCreateChannel] = useState(false);
   const [showDeleteModal, setShowDelete] = useState(false);
   const [showEditModal, setShowEdit] = useState(false);
@@ -32,11 +31,30 @@ const ChannelsList = (props) => {
 
   const { active, onChangeChannel, socket } = props;
 
+  const editingChannelName = () => channels
+    .find((channel) => channel.id === channelToEdit.toString())
+    ?.name;
+
+  useEffect(() => {
+    const scroll = () => {
+      if (isLoading) {
+        setTimeout(scroll, 100);
+      } else {
+        const activeChannel = channels.find((channel) => channel.id === active);
+        const activeChannelButton = document.querySelector(`#${activeChannel.name.replaceAll(' ', '')}`);
+        activeChannelButton.scrollIntoView();
+      }
+    };
+
+    scroll();
+  }, [active]);
+
   socket.on('newChannel', (channel) => {
     dispatch(newChannel(channel));
     toast.success(t('toasts.create'), { closeOnClick: true, toastId: '1' });
   });
   socket.on('removeChannel', ({ id }) => {
+    if (active === id) onChangeChannel('1');
     dispatch(removeChannel(id));
     toast.success(t('toasts.delete'), { toastId: '2' });
   });
@@ -98,7 +116,7 @@ const ChannelsList = (props) => {
         <ListGroup.Item as="li" key={item.id} className="d-flex dropdown btn-group p-0 bg-secondary">
           <button
             type="button"
-            id={item.id}
+            id={item.name.replaceAll(' ', '')}
             className={itemsClassConfig[activeState].channelNameBtn}
           >
             {`# ${item.name}`}
@@ -112,7 +130,7 @@ const ChannelsList = (props) => {
       <ListGroup.Item as="li" key={item.id} className="d-flex dropdown btn-group p-0">
         <button
           type="button"
-          id={item.id}
+          id={item.name.replaceAll(' ', '')}
           onClick={clickHandler(item.id)}
           className={itemsClassConfig[activeState].channelNameBtn}
         >
@@ -142,6 +160,7 @@ const ChannelsList = (props) => {
         show={showEditModal}
         handleClose={closeModalHandler(setShowEdit)}
         toEdit={channelToEdit}
+        nameToEdit={editingChannelName()}
       />
       <div className="d-flex mt-1 flex-row justify-content-between p-4">
         <b className="align-content-center text-center col mx-3 w-auto">{t('chat.channels')}</b>

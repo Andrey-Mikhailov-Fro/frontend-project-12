@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
@@ -8,11 +8,14 @@ import io from 'socket.io-client';
 import ChannelsBlock from './ChannelsBlock';
 import MessagesBlock from './MessagesBlock';
 import CommonHeader from './CommonHeader';
+import { refresh } from '../slices/authSlice';
 
 const socket = io();
 
 const Home = () => {
   const [activeChannel, setActive] = useState('1');
+  const dispatch = useDispatch();
+  dispatch(refresh());
   const userData = useSelector((state) => state.user);
   const isLoggedIn = userData.token !== '';
 

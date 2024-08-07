@@ -43,15 +43,15 @@ const SingUpForm = () => {
   const focus = {
     username: () => {
       setFocusedUsername(true);
-      formik.validateForm();
+      formik.validateField('username');
     },
     password: () => {
       setFocusedPassword(true);
-      formik.validateForm();
+      formik.validateField('password');
     },
     confirm: () => {
       setFocusedConfirm(true);
-      formik.validateForm();
+      formik.validateField('confirmPassword');
     },
   };
 
@@ -61,15 +61,16 @@ const SingUpForm = () => {
     <>
       <CommonHeader />
       <Container fluid className="row justify-content-center align-content-center">
-        <Card className="h-50 w-50 m-3 mb-1 p-5 shadow">
+        <Card className="h-50 w-25 m-3 mb-1 p-5 shadow">
+          <Card.Header as="h2" className="bg-white border-0 m-2 text-center">{t('signUpForm.title')}</Card.Header>
           <Form onSubmit={formik.handleSubmit}>
             <FloatingLabel className="mb-3" label={t('signUpForm.username')} controlId="username">
               <Form.Control
                 type="name"
                 name="username"
-                className="w-50"
+                className="w-100"
                 onBlur={focus.username}
-                isInvalid={focusUsername && formik.errors.username}
+                isInvalid={focusUsername && (formik.errors.username || errorUsername)}
                 value={formik.values.username}
                 onChange={formik.handleChange}
               />
@@ -81,7 +82,7 @@ const SingUpForm = () => {
               <Form.Control
                 type="password"
                 name="password"
-                className="w-50"
+                className="w-100"
                 onBlur={focus.password}
                 isInvalid={focusPassword && formik.errors.password}
                 value={formik.values.password}
@@ -95,7 +96,7 @@ const SingUpForm = () => {
               <Form.Control
                 type="password"
                 name="confirmPassword"
-                className="w-50"
+                className="w-100"
                 onBlur={focus.confirm}
                 isInvalid={focusConfirm && formik.errors.confirmPassword}
                 value={formik.values.confirmPassword}

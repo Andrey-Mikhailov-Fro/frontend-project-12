@@ -17,6 +17,7 @@ const MyForm = () => {
   const [error, setError] = useState('');
   const userData = useSelector((state) => state.user);
   localStorage.setItem('token', userData.token);
+  localStorage.setItem('user', userData.user);
 
   const { t } = useTranslation();
 
@@ -43,7 +44,7 @@ const MyForm = () => {
     <>
       <CommonHeader />
       <Container fluid className="row justify-content-center align-content-center">
-        <Card className="h-50 w-50 m-3 mb-1 p-5 shadow">
+        <Card className="h-25 w-25 m-3 mb-1 p-5 shadow">
           <Card.Header as="h1" className="text-center m-4 border-0 bg-white flex-nowrap">{t('signInForm.button')}</Card.Header>
           <Card.Body>
             <Formik>
@@ -52,7 +53,8 @@ const MyForm = () => {
                   <Form.Control
                     type="name"
                     name="nickname"
-                    className="w-50"
+                    className="w-100"
+                    required
                     isInvalid={possibleError}
                     value={formik.values.nickname}
                     onChange={formik.handleChange}
@@ -62,7 +64,8 @@ const MyForm = () => {
                   <Form.Control
                     type="password"
                     name="password"
-                    className="w-50"
+                    className="w-100"
+                    required
                     isInvalid={possibleError}
                     value={formik.values.password}
                     onChange={formik.handleChange}

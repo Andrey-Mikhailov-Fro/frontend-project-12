@@ -5,6 +5,7 @@ export default {
       button: 'Выйти',
     },
     signUpForm: {
+      title: 'Регистрация',
       username: 'Имя пользователя',
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
