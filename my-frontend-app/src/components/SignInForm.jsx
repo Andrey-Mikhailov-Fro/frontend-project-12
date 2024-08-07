@@ -16,8 +16,6 @@ const MyForm = () => {
   const [singIn, { isLoading: isSingingIn }] = useLoginMutation();
   const [error, setError] = useState('');
   const userData = useSelector((state) => state.user);
-  localStorage.setItem('token', userData.token);
-  localStorage.setItem('user', userData.user);
 
   const { t } = useTranslation();
 
@@ -44,7 +42,7 @@ const MyForm = () => {
     <>
       <CommonHeader />
       <Container fluid className="row justify-content-center align-content-center">
-        <Card className="h-25 w-25 m-3 mb-1 p-5 shadow">
+        <Card className="h-25 w-25 m-3 mb-1 p-5 flex-nowrap shadow">
           <Card.Header as="h1" className="text-center m-4 border-0 bg-white flex-nowrap">{t('signInForm.button')}</Card.Header>
           <Card.Body>
             <Formik>
@@ -86,7 +84,7 @@ const MyForm = () => {
             </Formik>
           </Card.Body>
           <Card.Footer className="text-center m-1 p-1 bg-white">
-            <span>{t('signInForm.haveAccount')}</span>
+            <span className="pe-1">{t('signInForm.haveAccount')}</span>
             <a href="/signup">{t('signInForm.registration')}</a>
           </Card.Footer>
         </Card>

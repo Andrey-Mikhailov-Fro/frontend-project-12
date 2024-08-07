@@ -15,6 +15,8 @@ const slice = createSlice({
     quit: (state) => {
       state.token = '';
       state.user = '';
+      localStorage.setItem('user', '');
+      localStorage.setItem('token', '');
     },
   },
   extraReducers: (builder) => {
@@ -24,6 +26,8 @@ const slice = createSlice({
         const { username, token } = payload;
         state.token = token;
         state.user = username;
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', username);
       },
     ).addMatcher(
       authApi.endpoints.signup.matchFulfilled,
@@ -31,6 +35,8 @@ const slice = createSlice({
         const { username, token } = payload;
         state.token = token;
         state.user = username;
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', username);
       },
     );
   },

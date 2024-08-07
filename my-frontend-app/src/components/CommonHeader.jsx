@@ -14,12 +14,10 @@ const CommonHeader = () => {
 
   const clickhandler = () => {
     dispatch(quit());
-    localStorage.setItem('user', '');
-    localStorage.setItem('token', '');
   };
 
   return (
-    <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+    <Navbar className="shadow-sm bg-white">
       <Container>
         <Navbar.Brand href="/">{t('header.brand')}</Navbar.Brand>
         {isLoggedIn ? <Button onClick={clickhandler}>{t('header.button')}</Button> : null}
