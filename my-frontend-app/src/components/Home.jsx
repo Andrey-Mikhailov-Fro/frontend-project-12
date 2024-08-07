@@ -15,7 +15,7 @@ const socket = io();
 const Home = () => {
   const [activeChannel, setActive] = useState('1');
   const dispatch = useDispatch();
-  // dispatch(refresh());
+  dispatch(refresh());
   const userData = useSelector((state) => state.user);
   const isLoggedIn = userData.token !== '';
 
