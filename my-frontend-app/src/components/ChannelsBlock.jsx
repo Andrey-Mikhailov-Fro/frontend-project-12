@@ -40,8 +40,7 @@ const ChannelsList = (props) => {
       if (isLoading) {
         setTimeout(scroll, 100);
       } else {
-        const activeChannel = channels.find((channel) => channel.id === active);
-        const activeChannelButton = document.querySelector(`#${activeChannel.name.replaceAll(' ', '')}`);
+        const activeChannelButton = document.querySelector(`#channel-${active}`);
         activeChannelButton.scrollIntoView();
       }
     };
@@ -116,7 +115,7 @@ const ChannelsList = (props) => {
         <ListGroup.Item as="li" key={item.id} className="d-flex dropdown btn-group p-0 bg-secondary">
           <button
             type="button"
-            id={item.name.replaceAll(' ', '')}
+            id={`channel-${item.id}`}
             className={itemsClassConfig[activeState].channelNameBtn}
           >
             {`# ${item.name}`}
@@ -130,7 +129,7 @@ const ChannelsList = (props) => {
       <ListGroup.Item as="li" key={item.id} className="d-flex dropdown btn-group p-0">
         <button
           type="button"
-          id={item.name.replaceAll(' ', '')}
+          id={`channel-${item.id}`}
           onClick={clickHandler(item.id)}
           className={itemsClassConfig[activeState].channelNameBtn}
         >
