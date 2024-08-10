@@ -1,23 +1,24 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useContext,
+} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
-import filter from 'leo-profanity';
 import { useEditChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
-
-filter.loadDictionary(navigator.language);
+import AppContext from './AppContext';
 
 const EditChannelModal = (props) => {
   const [editChannel, { isLoading: isEditingChannel }] = useEditChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
+  const filter = useContext(AppContext);
   const {
     show, handleClose, toEdit, nameToEdit,
   } = props;

@@ -4,7 +4,7 @@ import ru from '../locales/ru';
 
 const i18nextInstance = i18next.createInstance();
 
-const initializeI18next = async () => {
+export const initializeI18next = async () => {
   await i18nextInstance.use(initReactI18next).init({
     lng: 'ru', // Текущий язык
     fallbackLng: 'ru',
@@ -17,7 +17,5 @@ const initializeI18next = async () => {
     },
   });
 };
-
-initializeI18next();
 
 export default i18nextInstance;

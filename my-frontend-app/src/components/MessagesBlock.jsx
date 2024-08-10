@@ -1,28 +1,26 @@
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/esm/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { Formik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import filter from 'leo-profanity';
 import * as messagesApi from '../services/messagesApi';
-import { selectors as messagesSelectors, newMessage, removeMessage } from '../slices/messagesSlice';
+import { selectors as messagesSelectors } from '../slices/messagesSlice';
 import { selectors as channelsSelectors } from '../slices/channelsSlice';
+import AppContext from './AppContext';
 
-filter.loadDictionary(navigator.language);
-
-const MessagesList = (props) => {
+const MessagesList = () => {
   const { isLoading } = messagesApi.useGetMessagesQuery();
   const [sendMessage, { isLoading: isSendingMessage }] = messagesApi.useAddMessageMutation();
-  const dispatch = useDispatch();
+  const filter = useContext(AppContext);
 
   const { t } = useTranslation();
 
-  const { active, socket } = props;
+  const active = useSelector((state) => state.channels.active);
 
   const userData = useSelector((state) => state.user);
   const messages = useSelector(messagesSelectors.selectAll);
@@ -31,9 +29,7 @@ const MessagesList = (props) => {
 
   useEffect(() => {
     const scroll = () => {
-      if (isLoading) {
-        setTimeout(scroll, 100);
-      } else {
+      if (!isLoading) {
         const lastNumber = Math.max(...messages.map((message) => message.id));
         const lastMessage = document.querySelector(`#message-${lastNumber}`);
         if (lastMessage !== null) lastMessage.scrollIntoView();
@@ -46,17 +42,11 @@ const MessagesList = (props) => {
   const messageSubmitHandler = (e) => {
     e.preventDefault();
     const messageBody = e.target.message.value;
+    if (messageBody === '') return;
     const message = { body: messageBody, channelId: active, username: userData.user };
     e.target.message.value = '';
     sendMessage(message);
   };
-
-  socket.on('newMessage', (message) => {
-    dispatch(newMessage(message));
-  });
-  socket.on('removeMessage', ({ id }) => {
-    dispatch(removeMessage(id));
-  });
 
   const renderListItem = (item) => {
     const checkedMessage = filter.clean(item.body);

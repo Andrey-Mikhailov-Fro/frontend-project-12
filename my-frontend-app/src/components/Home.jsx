@@ -1,19 +1,15 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
-import io from 'socket.io-client';
 import ChannelsBlock from './ChannelsBlock';
 import MessagesBlock from './MessagesBlock';
 import CommonHeader from './CommonHeader';
 import { refresh } from '../slices/authSlice';
 
-const socket = io();
-
 const Home = () => {
-  const [activeChannel, setActive] = useState('1');
   const dispatch = useDispatch();
   // dispatch(refresh());
   const userData = useSelector((state) => state.user);
@@ -26,10 +22,10 @@ const Home = () => {
       <Container fluid className="container h-100 my-4 overflow-hidden rounded shadow align-self-stretch">
         <div className="row h-100 bg-white flex-md-row">
           <Card className="col-4 col-md-3 border-end px-0 bg-light flex-column h-100 d-flex">
-            <ChannelsBlock socket={socket} active={activeChannel} onChangeChannel={setActive} />
+            <ChannelsBlock />
           </Card>
           <Card className="col p-0 m-0 h-100 bg-light shadow-sm">
-            <MessagesBlock socket={socket} active={activeChannel} />
+            <MessagesBlock />
           </Card>
         </div>
       </Container>

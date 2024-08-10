@@ -1,25 +1,26 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useContext,
+} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import filter from 'leo-profanity';
 import { useAddChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
-import { selectors } from '../slices/channelsSlice';
-
-filter.loadDictionary(navigator.language);
+import { setActive, selectors } from '../slices/channelsSlice';
+import AppContext from './AppContext';
 
 const CreateChannelModal = (props) => {
   const [createChannel,
     { isLoading: isCreatingChannel }] = useAddChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
-  // eslint-disable-next-line no-unused-vars
-  const { show, handleClose, changeChnl } = props;
+  const filter = useContext(AppContext);
+  const dispatch = useDispatch();
+  const { show, handleClose } = props;
 
   const { t } = useTranslation();
 
@@ -35,7 +36,7 @@ const CreateChannelModal = (props) => {
       try {
         await validate(newChannel.trim(), channelsNames);
         const newActive = await createChannel({ name: checkedChannel.trim() });
-        changeChnl(newActive.data.id);
+        dispatch(setActive(newActive.data.id));
         formik.values.newChannel = '';
         setError('');
         handleClose();

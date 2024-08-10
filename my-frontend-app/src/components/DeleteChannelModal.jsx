@@ -12,7 +12,7 @@ const DeleteChannelModal = (props) => {
   const [removeChannel, { isLoading: isRemovingChannel }] = useRemoveChannelMutation();
   const [removeMessage] = useRemoveMessageMutation();
   const {
-    show, handleClose, toDelete, activeChnl, changeChnl,
+    show, handleClose, toDelete,
   } = props;
   const messagesToDelete = useSelector(selectors.selectAll)
     .filter((message) => message.channelId === toDelete);
@@ -20,7 +20,6 @@ const DeleteChannelModal = (props) => {
   const { t } = useTranslation();
 
   const hanleRemove = (id) => () => {
-    if (activeChnl === id) changeChnl('1');
     removeChannel(id);
     messagesToDelete.forEach((message) => removeMessage(message.id));
     handleClose();
