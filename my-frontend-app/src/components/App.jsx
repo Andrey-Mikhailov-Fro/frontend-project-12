@@ -20,6 +20,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 initializeI18next();
 
+/*
+localStorage.setItem('token', '');
+localStorage.setItem('user', '');
+*/
+
 const socket = io();
 
 socket.on('newChannel', (channel) => {
