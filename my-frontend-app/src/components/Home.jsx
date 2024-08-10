@@ -11,7 +11,7 @@ import { refresh } from '../slices/authSlice';
 
 const Home = () => {
   const dispatch = useDispatch();
-  // dispatch(refresh());
+  dispatch(refresh());
   const userData = useSelector((state) => state.user);
   const isLoggedIn = userData.token !== '';
 
