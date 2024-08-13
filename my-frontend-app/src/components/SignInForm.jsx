@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLoginMutation } from '../services/authApi';
 import CommonHeader from './CommonHeader';
+import routes from '../services/routes';
 
 const MyForm = () => {
   const [singIn, { isLoading: isSingingIn }] = useLoginMutation();
@@ -36,7 +37,7 @@ const MyForm = () => {
 
   const possibleError = error !== '';
 
-  if (userData.token !== '') return <Navigate to="/" />;
+  if (userData.token !== '') return <Navigate to={routes.home} />;
 
   return (
     <>

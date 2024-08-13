@@ -63,5 +63,6 @@ export default {
       newMessage: 'Новое сообщение',
       channelName: 'Имя канала',
     },
+    notFound: '404 not found',
   },
 };

@@ -3,8 +3,9 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { channelsApi } from '../services/channelsApi';
 
+const defaultChannel = '1';
 const channelsAdapter = createEntityAdapter();
-const initialState = channelsAdapter.getInitialState({ active: '1' });
+const initialState = channelsAdapter.getInitialState({ active: defaultChannel });
 
 const slice = createSlice({
   name: 'channels',

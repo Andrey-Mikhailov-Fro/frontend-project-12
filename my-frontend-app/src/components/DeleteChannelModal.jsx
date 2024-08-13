@@ -2,18 +2,20 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useRemoveChannelMutation } from '../services/channelsApi';
 import { selectors } from '../slices/messagesSlice';
 import { useRemoveMessageMutation } from '../services/messagesApi';
+import { hide } from '../slices/modalSlice';
 
-const DeleteChannelModal = (props) => {
+const DeleteChannelModal = () => {
   const [removeChannel, { isLoading: isRemovingChannel }] = useRemoveChannelMutation();
   const [removeMessage] = useRemoveMessageMutation();
-  const {
-    show, handleClose, toDelete,
-  } = props;
+  const dispatch = useDispatch();
+  const handleClose = () => dispatch(hide());
+  const toDelete = useSelector((state) => state.modal.channelToEdit.id);
+
   const messagesToDelete = useSelector(selectors.selectAll)
     .filter((message) => message.channelId === toDelete);
 
@@ -26,7 +28,7 @@ const DeleteChannelModal = (props) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.deleteHeader')}</Modal.Title>
       </Modal.Header>
@@ -39,7 +41,7 @@ const DeleteChannelModal = (props) => {
           {t('modals.confirmDelete')}
         </Button>
       </Modal.Footer>
-    </Modal>
+    </>
   );
 };
 

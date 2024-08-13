@@ -12,6 +12,7 @@ import { useFormik } from 'formik';
 import { useSignupMutation } from '../services/authApi';
 import validationSchema from '../services/validationSingUp';
 import CommonHeader from './CommonHeader';
+import routes from '../services/routes';
 
 const SingUpForm = () => {
   const [singUp, { isLoading: isSingingUp }] = useSignupMutation();
@@ -55,7 +56,7 @@ const SingUpForm = () => {
     },
   };
 
-  if (userData.token !== '') return <Navigate to="/" />;
+  if (userData.token !== '') return <Navigate to={routes.home} />;
 
   return (
     <>

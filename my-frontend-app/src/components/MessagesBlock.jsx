@@ -5,13 +5,14 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/esm/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import Spinner from 'react-bootstrap/Spinner';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as messagesApi from '../services/messagesApi';
 import { selectors as messagesSelectors } from '../slices/messagesSlice';
 import { selectors as channelsSelectors } from '../slices/channelsSlice';
-import AppContext from './AppContext';
+import AppContext from '../services/AppContext';
 
 const MessagesList = () => {
   const { isLoading } = messagesApi.useGetMessagesQuery();
@@ -69,11 +70,11 @@ const MessagesList = () => {
   return (
     <Container className="d-flex h-100 w-100 p-0 flex-column justify-content-end">
       <div className="bg-secondary text-white w-100 mb-4 p-3 shadow-sm small">
-        <p><b>{`# ${currentChannel?.name}` || 'Loading...'}</b></p>
+        <p><b>{`# ${currentChannel?.name}` || <Spinner animation="border" role="status" />}</b></p>
         <span>{t('chat.count', { count: currentChannelMessages.length })}</span>
       </div>
       <ListGroup data-spy="scroll" className="chat-messages w-100 align-content-bottom overflow-auto m-0 px-5">
-        {isLoading ? 'Loading...' : currentChannelMessages}
+        {isLoading ? <Spinner animation="border" role="status" /> : currentChannelMessages}
       </ListGroup>
       <div className="mt-auto m-0 p-3 w-100">
         <Formik initialValues={{ message: '' }}>

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import authDataReducer, { quit } from './authSlice';
 import messagesDataReducer from './messagesSlice';
 import channelsDataReducer from './channelsSlice';
+import modalDataReducer from './modalSlice';
 import { authApi } from '../services/authApi';
 import { channelsApi } from '../services/channelsApi';
 import { messagesApi } from '../services/messagesApi';
@@ -27,6 +28,7 @@ export default configureStore({
     channels: channelsDataReducer,
     messages: messagesDataReducer,
     user: authDataReducer,
+    modal: modalDataReducer,
     [authApi.reducerPath]: authApi.reducer,
     [channelsApi.reducerPath]: channelsApi.reducer,
     [messagesApi.reducerPath]: messagesApi.reducer,

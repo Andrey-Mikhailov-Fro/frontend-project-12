@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, {
   useState, useRef, useEffect, useContext,
@@ -6,22 +5,23 @@ import React, {
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useEditChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
 import { selectors } from '../slices/channelsSlice';
-import AppContext from './AppContext';
+import AppContext from '../services/AppContext';
+import { hide } from '../slices/modalSlice';
 
-const EditChannelModal = (props) => {
+const EditChannelModal = () => {
   const [editChannel, { isLoading: isEditingChannel }] = useEditChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
   const filter = useContext(AppContext);
-  const {
-    show, handleClose, toEdit, nameToEdit,
-  } = props;
+  const dispatch = useDispatch();
+  const handleClose = () => dispatch(hide());
+  const { channelToEdit } = useSelector((state) => state.modal);
 
   const { t } = useTranslation();
 
@@ -29,7 +29,7 @@ const EditChannelModal = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      renamedChannel: nameToEdit,
+      renamedChannel: channelToEdit.name,
     },
     enableReinitialize: true,
     onSubmit: async (value) => {
@@ -37,7 +37,7 @@ const EditChannelModal = (props) => {
       const checkedRenamedChannel = filter.clean(renamedChannel);
       try {
         await validate(renamedChannel.trim(), channelsNames);
-        const request = { id: toEdit, name: checkedRenamedChannel.trim() };
+        const request = { id: channelToEdit.id, name: checkedRenamedChannel.trim() };
         editChannel(request);
         formik.values.renamedChannel = '';
         handleClose();
@@ -55,14 +55,15 @@ const EditChannelModal = (props) => {
         setTimeout(focus, 100);
       } else {
         inputRef.current.focus();
+        inputRef.current.select();
       }
     };
 
     focus();
-  });
+  }, []);
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.editHeader')}</Modal.Title>
       </Modal.Header>
@@ -89,7 +90,7 @@ const EditChannelModal = (props) => {
           </Button>
         </Modal.Footer>
       </Form>
-    </Modal>
+    </>
   );
 };
 

@@ -11,16 +11,17 @@ import { useTranslation } from 'react-i18next';
 import { useAddChannelMutation } from '../services/channelsApi';
 import validate from '../services/validationChannel';
 import { setActive, selectors } from '../slices/channelsSlice';
-import AppContext from './AppContext';
+import AppContext from '../services/AppContext';
+import { hide } from '../slices/modalSlice';
 
-const CreateChannelModal = (props) => {
+const CreateChannelModal = () => {
   const [createChannel,
     { isLoading: isCreatingChannel }] = useAddChannelMutation();
   const channelsNames = useSelector(selectors.selectAll).map((channel) => channel.name);
   const [error, setError] = useState('');
   const filter = useContext(AppContext);
   const dispatch = useDispatch();
-  const { show, handleClose } = props;
+  const handleClose = () => dispatch(hide());
 
   const { t } = useTranslation();
 
@@ -63,7 +64,7 @@ const CreateChannelModal = (props) => {
   });
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.createHeader')}</Modal.Title>
       </Modal.Header>
@@ -90,7 +91,7 @@ const CreateChannelModal = (props) => {
           </Button>
         </Modal.Footer>
       </Form>
-    </Modal>
+    </>
   );
 };
 
